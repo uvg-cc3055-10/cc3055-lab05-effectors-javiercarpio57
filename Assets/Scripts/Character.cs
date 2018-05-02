@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Character : MonoBehaviour {
 
+    public GameObject feet;
+    public LayerMask layerMask;
+    private Vector2 startingPosition;
+
+    public GameObject gem;
 
     Rigidbody2D rb2d;
     SpriteRenderer sr;
@@ -19,6 +25,8 @@ public class Character : MonoBehaviour {
         rb2d = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+
+        startingPosition = new Vector2(rb2d.position.x, rb2d.position.y);
     }
 	
 
@@ -34,7 +42,35 @@ public class Character : MonoBehaviour {
         sr.flipX = !facingRight;
 
         if (Input.GetButtonDown("Jump")) {
-            rb2d.AddForce(Vector2.up*jumpForce);
+            RaycastHit2D raycast = Physics2D.Raycast(feet.transform.position, Vector2.down, 0.1f, layerMask);
+
+            if(raycast.collider != null)
+            {
+                rb2d.AddForce(Vector2.up * jumpForce);
+            }
         }
 	}
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag.Equals("Door1"))
+        {
+            Debug.Log("Puertaaaa");
+            SceneManager.LoadScene("Dungeon2");
+        }
+        if (collision.tag.Equals("Door2"))
+        {
+            Debug.Log("Puertaaaa");
+            SceneManager.LoadScene("Dungeon3");
+        }
+        if (collision.tag.Equals("gem"))
+        {
+            GameObject.Destroy(gem);
+        }
+        if (collision.tag.Equals("Enemy"))
+        {
+            Debug.Log("Enemigooo");
+            rb2d.position = startingPosition;
+        }
+    }
 }
