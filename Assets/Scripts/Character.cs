@@ -25,7 +25,7 @@ public class Character : MonoBehaviour {
     /*Velocidad de movimiento*/
     private float speed = 5f;
     /*Fuerza de salto*/
-    private float jumpForce = 250f;
+    private float jumpForce = 350f;
     /*Posicion de giro*/
     private bool facingRight = true;
  
